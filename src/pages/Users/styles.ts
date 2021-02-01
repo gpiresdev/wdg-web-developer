@@ -68,6 +68,10 @@ export const Header = styled.header`
   button:disabled {
     cursor: not-allowed;
     pointer-events: all !important;
+
+    svg {
+      color: grey;
+    }
   }
 
   .page-button {
@@ -193,12 +197,17 @@ export const EditMenu = styled.div`
   }
 
   button {
-    transform: scale(1);
-    transition: 0.3s ease-out;
     border: none;
     background: none;
     outline: none;
     z-index: 100;
+    transform: scale(1) translateY(0px);
+    transition: 0.3s ease-out;
+  }
+
+  button:hover {
+    transform: scale(1.02) translateY(-2px);
+    transition: 0.3s ease-in;
   }
 
   @media screen and (min-width: 768px) {

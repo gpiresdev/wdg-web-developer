@@ -7,6 +7,7 @@ import { ImBin } from 'react-icons/im';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { useAuth } from '../../context/AuthContext';
+import { useModal } from '../../context/ModalContext';
 import api from '../../services/api';
 import {
   Container,
@@ -45,6 +46,7 @@ const Users: React.FC = () => {
   const location = useLocation();
   const history = useHistory();
   const { signOut } = useAuth();
+  const { handleOpenModal } = useModal();
 
   useEffect(() => {
     async function loadUsers() {
@@ -75,23 +77,31 @@ const Users: React.FC = () => {
     loadUsers();
   }, [location.search]);
 
+  const handleLogout = useCallback(() => {
+    signOut();
+    history.push('/');
+  }, [history, signOut]);
+
+  const handleMenuVisibility = useCallback((id: number) => {
+    if (visible === id) {
+      setVisible(undefined)
+    } else {
+      setVisible(id);
+    }
+  }, [visible]);
+
   const handleRedirectToUserEdit = useCallback((id: number) => {
     history.push(`users/${id}`);
   }, [history]);
 
-  const handleDeleteUser = useCallback(async (id: number) => {
-    const confirmation = window.confirm("Are you sure you want to delete user?");
-
-    if (confirmation) {
-      try {
-        await api.delete(`users/${id}`)
-        const deleteUser = users?.filter((response) => response.id !== id);
-        setUsers(deleteUser);
-      } catch (error) {
-        alert('An error has occurred, try again later.');
-      }
-    }
-  }, [users]);
+  const handleDeleteConfirmation = useCallback((id: number) => {
+    handleOpenModal({
+      variant: "confirmation",
+      message: "Are you sure you want to delete this user?",
+      title: "Confirmation",
+      id,
+    });
+  }, [handleOpenModal]);
 
   const handleNextPageChange = useCallback(() => {
     if (paginationData && paginationData.page < paginationData?.total_pages) {
@@ -106,19 +116,6 @@ const Users: React.FC = () => {
       history.push(`/users?page=${prevPage}`);
     }
   }, [history, paginationData]);
-
-  const handleMenuVisibility = useCallback((id: number) => {
-    if (visible === id) {
-      setVisible(undefined)
-    } else {
-      setVisible(id);
-    }
-  }, [visible]);
-
-  const handleLogout = useCallback(() => {
-    signOut();
-    history.push('/');
-  }, [history, signOut]);
 
   return (
     <Container>
@@ -167,7 +164,7 @@ const Users: React.FC = () => {
                   <button onClick={() => handleRedirectToUserEdit(user.id)} type="button">
                     <AiFillEdit color="grey" size={35} />
                   </button>
-                  <button onClick={() => handleDeleteUser(user.id)} type="button">
+                  <button onClick={() => handleDeleteConfirmation(user.id)} type="button">
                     <ImBin color="red" size={35} />
                   </button>
                 </EditMenu> : null

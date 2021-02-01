@@ -4,6 +4,7 @@ import { useHistory, useParams } from 'react-router-dom';
 
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+import { useModal } from '../../context/ModalContext';
 import api from '../../services/api';
 import { User } from '../Users'
 import { Container, Header, FormContainer, TextContainer } from './styles';
@@ -16,6 +17,7 @@ const EditUser: React.FC = () => {
   const [isLoadingApiCall, setIsLoadingApiCall] = useState(false);
 
   const history = useHistory();
+  const { handleOpenModal } = useModal();
 
   const { id }: any = useParams();
 
@@ -29,6 +31,10 @@ const EditUser: React.FC = () => {
       }
     }
     loadSingleUser();
+    if (user) {
+      setFirstNameInput(user.first_name);
+      setLastNameInput(user.last_name);
+    }
 
     return function cleanup() {
       mounted = false;
@@ -38,22 +44,36 @@ const EditUser: React.FC = () => {
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     setIsLoadingApiCall(true);
+
     const validation = /^[a-zA-Z ]+$/;
     if (firstNameInput.match(validation) && lastNameInput.match(validation)) {
       try {
         await api.put(`users/${id}?delay=2`, { first_name: firstNameInput, last_name: lastNameInput });
         setIsLoadingApiCall(false);
-        alert('User has been updated.');
+        handleOpenModal({
+          variant: 'success',
+          title: 'Success!',
+          message: 'User data changed succesfully.',
+        });
+
         history.goBack();
       } catch (error) {
         setIsLoadingApiCall(false);
-        alert('An error has ocurred, try again later.');
+        handleOpenModal({
+          variant: 'error',
+          title: 'Error',
+          message: 'An error has occurred, try again later.',
+        });
       }
     } else {
       setIsLoadingApiCall(false);
-      alert('Invalid characters, try again.');
+      handleOpenModal({
+        variant: 'error',
+        title: 'Error',
+        message: 'Invalid characters.',
+      });
     }
-  }, [firstNameInput, lastNameInput, id, history]);
+  }, [firstNameInput, lastNameInput, id, history, handleOpenModal]);
 
   return (
     <Container>
@@ -85,7 +105,7 @@ const EditUser: React.FC = () => {
             />
             <Button loading={isLoadingApiCall} type="submit">
               SET CHANGES
-                </Button>
+            </Button>
           </form>
         </FormContainer>
       }

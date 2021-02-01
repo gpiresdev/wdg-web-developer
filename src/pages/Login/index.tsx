@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import { useAuth } from '../../context/AuthContext';
+import { useModal } from '../../context/ModalContext';
 import { Container, FormContainer, Waves, Form } from "./styles";
 
 const Login: React.FC = () => {
@@ -14,6 +15,7 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { handleOpenModal } = useModal();
 
   const handleSubmit = async (e: SyntheticEvent): Promise<void> => {
     e.preventDefault();
@@ -33,11 +35,20 @@ const Login: React.FC = () => {
 
         history.push('/users');
       } catch (err) {
-        alert('Incorrect e-mail or user password, try again.');
         setIsLoading(false);
+        handleOpenModal({
+          variant: 'error',
+          message: 'Incorrect e-mail/password combination, check your credentials.',
+          title: 'Error'
+        });
       }
     } else {
-      alert('Invalid email adress.');
+      setIsLoading(false);
+      handleOpenModal({
+        variant: 'error',
+        message: 'Invalid e-mail address.',
+        title: 'Error'
+      });
     }
   };
 
