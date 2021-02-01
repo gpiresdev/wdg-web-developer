@@ -4,7 +4,7 @@
     <img src="assets/wdglogo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">WDG Automation Test Case</h3>
+  <h3 align="center">WDG Automation Case</h3>
 </p>
 
 <details open="open">
@@ -29,7 +29,8 @@
 
 ## About
 
-Test case for Web Developing job at WDG Automation. The application contains four screens:
+Case for a
+ Web Developing job at WDG Automation. The application contains four screens:
 * Authentication
 * Listing and deleting users
 * User editing
