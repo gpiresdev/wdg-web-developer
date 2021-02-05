@@ -10,7 +10,7 @@ import { User } from '../Users'
 import { Container, Header, FormContainer, TextContainer } from './styles';
 
 const EditUser: React.FC = () => {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User>({} as User);
   const [firstNameInput, setFirstNameInput] = useState<string>('');
   const [lastNameInput, setLastNameInput] = useState<string>('');
   const [isLoadingPage, setIsLoadingPage] = useState(true);
@@ -18,15 +18,10 @@ const EditUser: React.FC = () => {
 
   const { handleOpenModal } = useModal();
 
-  const history = useHistory();
-
   const { id }: any = useParams();
 
   useEffect(() => {
     let mounted = true;
-    function cleanup() {
-      mounted = false;
-    }
 
     async function getUser() {
       await api.get(`/users/${id}?delay=2`).then((response) => {
@@ -37,17 +32,19 @@ const EditUser: React.FC = () => {
     }
 
     function setUserInput() {
-      if (user && mounted) {
-        setFirstNameInput(user.first_name);
-        setLastNameInput(user.last_name);
-      }
+      setFirstNameInput(user.first_name);
+      setLastNameInput(user.last_name);
     }
 
     getUser();
-    setUserInput();
+    if (mounted) {
+      setUserInput();
+    }
 
-    return cleanup();
-  }, [user, id, history]);
+    return function cleanup() {
+      mounted = false;
+    };
+  }, [id, user.first_name, user.last_name]);
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();

@@ -40,7 +40,12 @@ const Users: React.FC = () => {
   const { handleOpenModal } = useModal();
 
   useEffect(() => {
+    let mounted = true;
     loadUsers();
+
+    return function cleanup() {
+      mounted = false;
+    }
   }, [loadUsers]);
 
   const handleLogout = useCallback(() => {
