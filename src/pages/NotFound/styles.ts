@@ -11,8 +11,8 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
 
-  background: rgb(39,41,57);
-  background: radial-gradient(circle, rgba(39,41,57,1) 0%, rgba(0,0,0,0.9472163865546218) 100%);
+  background: rgb(3,61,119);
+  background: linear-gradient(52deg, rgba(3,61,119,1) 0%, rgba(96,150,186,1) 100%);
 `;
 
 export const ErrorTitle = styled.h1`

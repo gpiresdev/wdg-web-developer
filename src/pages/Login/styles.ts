@@ -10,8 +10,8 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
 
-  background: rgb(26,37,128);
-  background: radial-gradient(circle, rgba(26,37,128,1) 0%, rgba(2,0,32,0.9472163865546218) 100%);
+  background: rgb(64,87,123);
+  background: linear-gradient(90deg, rgba(64,87,123,1) 0%, rgba(113,141,168,1) 100%);
 `;
 
 export const Waves = styled.div`
@@ -31,7 +31,7 @@ export const Waves = styled.div`
   }
 
   .shape-fill {
-    fill: #0A0041;
+    fill: #ffffff;
   }
 
   @media screen and (min-width: 768px) {

@@ -1,6 +1,4 @@
-import React, { useState, useContext, createContext, useCallback, useRef } from 'react';
-
-import { AxiosResponse } from 'axios';
+import React, { useState, useContext, createContext, useCallback } from 'react';
 
 export interface ModalProps {
   title: string;

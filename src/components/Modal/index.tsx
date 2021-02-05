@@ -3,11 +3,13 @@ import { AiFillCheckSquare, AiFillCloseSquare } from 'react-icons/ai';
 import { BiError, BiCheckCircle, BiQuestionMark } from 'react-icons/bi';
 
 import { useModal } from '../../context/ModalContext';
+import { useUsers } from '../../context/UsersContext';
 import api from '../../services/api';
 import { Container, ModalHeader, ModalBody, ModalTitle, ModalMessage, ModalButtonContainer } from './styles';
 
 const Modal: React.FC = () => {
   const { visible, modalProps, handleCloseModal, handleOpenModal } = useModal();
+  const { filterUsers } = useUsers();
 
   const handleConfirmSelection = useCallback(async () => {
     try {
@@ -17,6 +19,9 @@ const Modal: React.FC = () => {
         title: 'Success',
         variant: 'success',
       });
+      if (modalProps.id) {
+        filterUsers(modalProps.id);
+      }
     } catch (error) {
       handleOpenModal({
         message: 'An error has occurred, try again later.',
@@ -24,7 +29,7 @@ const Modal: React.FC = () => {
         variant: 'error',
       });
     }
-  }, [modalProps, handleOpenModal]);
+  }, [modalProps, handleOpenModal, filterUsers]);
 
   return (
     <Container visible={visible}>

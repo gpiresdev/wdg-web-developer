@@ -2,12 +2,15 @@ import React from 'react';
 
 import { AuthProvider } from './AuthContext';
 import { ModalProvider } from './ModalContext';
+import { UserProvider } from './UsersContext';
 
 const AppProvider: React.FC = ({ children }) => (
   <AuthProvider>
-    <ModalProvider>
-      {children}
-    </ModalProvider>
+    <UserProvider>
+      <ModalProvider>
+        {children}
+      </ModalProvider>
+    </UserProvider>
   </AuthProvider>
 );
 

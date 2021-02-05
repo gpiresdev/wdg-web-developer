@@ -4,11 +4,11 @@ import React, {
 } from 'react';
 import { AiOutlinePoweroff, AiOutlineMore, AiFillEdit, AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import { ImBin } from 'react-icons/im';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { useAuth } from '../../context/AuthContext';
 import { useModal } from '../../context/ModalContext';
-import api from '../../services/api';
+import { useUsers } from '../../context/UsersContext';
 import {
   Container,
   Wave,
@@ -30,55 +30,18 @@ export interface User {
   avatar: string;
 }
 
-interface IPagination {
-  page: number;
-  per_page: number;
-  total: number;
-  total_pages: number;
-}
-
 const Users: React.FC = () => {
-  const [users, setUsers] = useState<User[]>();
-  const [paginationData, setPaginationData] = useState<IPagination>();
   const [visible, setVisible] = useState<number | undefined>();
-  const [isLoading, setIsLoading] = useState(false);
 
-  const location = useLocation();
+  const { isLoading, loadUsers, paginationData, users } = useUsers();
+
   const history = useHistory();
   const { signOut } = useAuth();
   const { handleOpenModal } = useModal();
 
-  const totalPages = paginationData?.total_pages;
-
   useEffect(() => {
-    async function loadUsers() {
-      if (totalPages && Number(location.search.replace('?page=', '')) > totalPages) {
-        history.push('/not-found')
-      } else if (location.search) {
-        const response = await api.get(`users${location.search}?delay=2`);
-        setUsers(response.data.data);
-        setPaginationData({
-          per_page: response.data.per_page,
-          page: response.data.page,
-          total: response.data.total,
-          total_pages: response.data.total_pages
-        });
-        setIsLoading(false);
-      } else {
-        const response = await api.get('users?delay=2');
-        setUsers(response.data.data);
-        setPaginationData({
-          per_page: response.data.per_page,
-          page: response.data.page,
-          total: response.data.total,
-          total_pages: response.data.total_pages
-        });
-        setIsLoading(false);
-      }
-    }
-    setIsLoading(true);
     loadUsers();
-  }, [location.search, history, totalPages]);
+  }, [loadUsers]);
 
   const handleLogout = useCallback(() => {
     signOut();

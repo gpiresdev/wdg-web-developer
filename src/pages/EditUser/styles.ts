@@ -6,8 +6,8 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
 
-  background: rgb(68,63,144);
-  background: linear-gradient(120deg, rgba(68,63,144,1) 0%, rgba(4,7,29,1) 100%);
+  background: rgb(39,76,119);
+  background: linear-gradient(52deg, rgba(39,76,119,1) 0%, rgba(3,61,119,1) 100%);
 `;
 
 export const Header = styled.header`

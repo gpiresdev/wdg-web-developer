@@ -5,8 +5,10 @@ const api = axios.create({
 });
 
 api.interceptors.response.use((response) => response, (err) => {
-  Promise.reject(err);
-  window.location.href = '/notfound';
+  if (err.response.status === 404) {
+    Promise.reject(err);
+    window.location.href = '/notfound';
+  }
 });
 
 export default api;

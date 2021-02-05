@@ -4,10 +4,12 @@ export const Container = styled.div`
   height: auto;
   height: 100%;
 
-  overflow: auto;
+  display: flex;
 
-  background: rgb(68,63,144);
-  background: linear-gradient(120deg, rgba(68,63,144,1) 0%, rgba(4,7,29,1) 100%);
+  justify-content: space-between;
+
+  background: rgb(39,76,119);
+  background: linear-gradient(52deg, rgba(39,76,119,1) 0%, rgba(96,150,186,1) 100%);
 
   @media screen and (min-width: 768px) {
     height: 100%;
@@ -30,7 +32,7 @@ export const Wave = styled.div`
   }
 
   .shape-fill {
-    fill: #0A061F;
+    fill: #ffffff;
   }
 `;
 
@@ -101,6 +103,7 @@ export const CardsContainer = styled.div`
   justify-content: center;
 
   height: 100%;
+  width: 100%;
 
   @media screen and (min-width: 768px) {
     grid-template-columns: repeat(2,0.4fr);
@@ -146,6 +149,7 @@ export const Avatar = styled.img`
   width: 250px;
   border-radius: 15px;
   z-index: 1;
+  box-shadow: 9px 7px 29px 0px rgba(0,0,0,0.75);
 
   @media screen and (min-width: 768px) {
     height: 250px;
@@ -246,7 +250,7 @@ export const Text = styled.div`
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
     font-size: 18px;
-    color: #868585;
+    color: #8b8c89;
   }
 
   p + p {
