@@ -51,6 +51,7 @@ const Users: React.FC = () => {
   useEffect(() => {
     async function loadUsers() {
       if (location.search) {
+        setIsLoading(true);
         const response = await api.get(`users${location.search}?delay=2`);
         setUsers(response.data.data);
         setPaginationData({
@@ -126,9 +127,6 @@ const Users: React.FC = () => {
         </svg>
       </Wave>
       <Header>
-        <button className="logout" onClick={handleLogout} type="button">
-          <AiOutlinePoweroff color="red" size={35} />
-        </button>
         <Pagination>
           {isLoading
             ? <span>Loading...</span>
@@ -143,6 +141,9 @@ const Users: React.FC = () => {
             <AiOutlineArrowRight size={35} />
           </button>
         </Pagination>
+        <button className="logout" onClick={handleLogout} type="button">
+          <AiOutlinePoweroff color="red" size={35} />
+        </button>
       </Header>
       <CardsContainer>
         {users?.map((user) => (

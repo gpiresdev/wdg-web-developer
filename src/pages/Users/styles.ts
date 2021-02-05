@@ -56,6 +56,10 @@ export const Header = styled.header`
     opacity: .7;
   }
 
+  .logout {
+    margin-right: 2rem;
+  }
+
   button {
     background: none;
     cursor: pointer;
@@ -262,7 +266,7 @@ export const Text = styled.div`
 export const Pagination = styled.div`
   display: flex;
   align-items: center;
-  margin: 0 2rem 0 auto;
+  margin: 0 auto 0 2rem;
   z-index: 100;
 
   span {

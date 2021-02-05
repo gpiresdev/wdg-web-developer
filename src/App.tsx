@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import Modal from './components/Modal';
 import AppProvider from './context';
@@ -8,14 +8,13 @@ import GlobalStyle from './styles/global';
 
 const App: React.FC = () => (
   <>
-    <Router>
+    <BrowserRouter>
       <AppProvider>
         <Routes />
         <Modal />
         <GlobalStyle />
       </AppProvider>
-    </Router>
+    </BrowserRouter>
   </>
 )
-
 export default App;

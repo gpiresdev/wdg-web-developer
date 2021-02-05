@@ -16,30 +16,38 @@ const EditUser: React.FC = () => {
   const [isLoadingPage, setIsLoadingPage] = useState(true);
   const [isLoadingApiCall, setIsLoadingApiCall] = useState(false);
 
-  const history = useHistory();
   const { handleOpenModal } = useModal();
+
+  const history = useHistory();
 
   const { id }: any = useParams();
 
   useEffect(() => {
     let mounted = true;
-    async function loadSingleUser() {
-      const response = await api.get(`/users/${id}?delay=2`);
-      if (mounted) {
-        setUser(response.data.data);
-        setIsLoadingPage(false);
-      }
-    }
-    loadSingleUser();
-    if (user) {
-      setFirstNameInput(user.first_name);
-      setLastNameInput(user.last_name);
-    }
-
-    return function cleanup() {
+    function cleanup() {
       mounted = false;
     }
-  }, [user, id]);
+
+    async function getUser() {
+      await api.get(`/users/${id}?delay=2`).then((response) => {
+        setUser(response.data.data);
+        setIsLoadingPage(false);
+      }, (err) => {
+      })
+    }
+
+    function setUserInput() {
+      if (user && mounted) {
+        setFirstNameInput(user.first_name);
+        setLastNameInput(user.last_name);
+      }
+    }
+
+    getUser();
+    setUserInput();
+
+    return cleanup();
+  }, [user, id, history]);
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -56,7 +64,7 @@ const EditUser: React.FC = () => {
           message: 'User data changed succesfully.',
         });
 
-        history.goBack();
+        window.history.back();
       } catch (error) {
         setIsLoadingApiCall(false);
         handleOpenModal({
@@ -73,12 +81,12 @@ const EditUser: React.FC = () => {
         message: 'Invalid characters.',
       });
     }
-  }, [firstNameInput, lastNameInput, id, history, handleOpenModal]);
+  }, [firstNameInput, lastNameInput, id, handleOpenModal]);
 
   return (
     <Container>
       <Header>
-        <button onClick={() => history.goBack()} type="button">
+        <button onClick={() => window.history.back()} type="button">
           <AiOutlineArrowLeft color="white" size={35} />
         </button>
       </Header>
