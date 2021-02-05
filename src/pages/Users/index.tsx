@@ -48,10 +48,13 @@ const Users: React.FC = () => {
   const { signOut } = useAuth();
   const { handleOpenModal } = useModal();
 
+  const totalPages = paginationData?.total_pages;
+
   useEffect(() => {
     async function loadUsers() {
-      if (location.search) {
-        setIsLoading(true);
+      if (totalPages && Number(location.search.replace('?page=', '')) > totalPages) {
+        history.push('/not-found')
+      } else if (location.search) {
         const response = await api.get(`users${location.search}?delay=2`);
         setUsers(response.data.data);
         setPaginationData({
@@ -62,7 +65,6 @@ const Users: React.FC = () => {
         });
         setIsLoading(false);
       } else {
-        setIsLoading(true);
         const response = await api.get('users?delay=2');
         setUsers(response.data.data);
         setPaginationData({
@@ -76,7 +78,7 @@ const Users: React.FC = () => {
     }
     setIsLoading(true);
     loadUsers();
-  }, [location.search]);
+  }, [location.search, history, totalPages]);
 
   const handleLogout = useCallback(() => {
     signOut();
