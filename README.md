@@ -61,7 +61,7 @@ Implemented features:
 1. Install npm or Yarn on your computer.
 2. Clone the repo
    ```sh
-   git clone https://github.com/gguito/wdg-test-case.git
+   git clone https://github.com/gguito/wdg-web-developer.git
    ```
 3. To install the dependencies, run the following command on the project root folder
    ```sh
